@@ -1,5 +1,10 @@
 import os
 
+pedidos = {"id_1": ["remedios", "40g", "urgencia", "entregue"]} #EXEMPLOS
+entregadores = {"Gabriel": ["id_1", "id_2"]}
+cont_pedidos = 0
+limit_entrega = 3
+
 def menu_entregadores():
     os.system("cls" if os.name == "nt" else "clear")
     print(f"======================================================= \n  FLUXONORTE  |  ENTREGADORES\n=======================================================")
