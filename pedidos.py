@@ -36,7 +36,7 @@ def cadastrar_pedido():
 
     dados.contador_pedidos += 1
     id_pedido = f"id_{dados.contador_pedidos}"
-    dados.pedidos[id_pedido] = {"id":id_pedido,"item":item,"peso":peso,"prioridade":prioridade,"status":"pendente","entregador": None}
+    dados.pedidos[id_pedido] = [item, peso, prioridade, "pendente"]
     print(f"\n  Pedido cadastrado com sucesso! ID: {id_pedido}")
     input("\n  Pressione ENTER para continuar...")
     menus.menu_pedidos()

@@ -3,25 +3,21 @@ import dados
 import menus
 
 
-
 def pedidos_pendentes():
     os.system("cls" if os.name == "nt" else "clear")
     print(f"=======================================================\n  FLUXONORTE  |  PEDIDOS PENDENTES\n=======================================================")
 
     encontrados = []
-    for p in dados.pedidos.values():
-        if p["status"] == "pendente":
-            encontrados.append(p)
+    for id_p, p in dados.pedidos.items():
+        if p[3] == "pendente":
+            encontrados.append(id_p)
+
     if not encontrados:
         print("\n  Nenhum pedido pendente.")
     else:
-        for p in encontrados:
-            if p["entregador"]:
-                entregador = p["entregador"]
-            else:
-                entregador = "Nenhum"
-            print(f"\n  ID: {p['id']}  |  Item: {p['item']}  |  Prioridade: {p['prioridade']}")
-            print(f"  Entregador: {entregador}")
+        for id_p in encontrados:
+            p = dados.pedidos[id_p]
+            print(f"\n  ID: {id_p}  |  Item: {p[0]}  |  Prioridade: {p[2]}")
             print("  -------------------------------------------------------")
 
     input("\n  Pressione ENTER para continuar...")
@@ -33,14 +29,16 @@ def pedidos_entregues():
     print(f"=======================================================\n  FLUXONORTE  |  PEDIDOS ENTREGUES\n=======================================================")
 
     encontrados = []
-    for p in dados.pedidos.values():
-        if p["status"] == "entregue":
-            encontrados.append(p)
+    for id_p, p in dados.pedidos.items():
+        if p[3] == "entregue":
+            encontrados.append(id_p)
+
     if not encontrados:
         print("\n  Nenhum pedido entregue.")
     else:
-        for p in encontrados:
-            print(f"\n  ID: {p['id']}  |  Item: {p['item']}  |  Entregador: {p['entregador']}")
+        for id_p in encontrados:
+            p = dados.pedidos[id_p]
+            print(f"\n  ID: {id_p}  |  Item: {p[0]}")
             print("  -------------------------------------------------------")
 
     input("\n  Pressione ENTER para continuar...")
@@ -52,15 +50,29 @@ def entregadores_disponiveis():
     print(f"=======================================================\n  FLUXONORTE  |  ENTREGADORES DISPONIVEIS\n=======================================================")
 
     encontrados = []
-    for e in dados.entregadores.values():
-        if e["disponivel"] and len(e["pedidos"]) < e["limite"]:
-            encontrados.append(e)
+    for nome, e in dados.entregadores.items():
+        if e[1] == "moto":
+            limite = 1
+        elif e[1] == "carro":
+            limite = 2
+        else:
+            limite = 3
+        if e[2] == "disponivel" and len(e[0]) < limite:
+            encontrados.append(nome)
+
     if not encontrados:
         print("\n  Nenhum entregador disponivel.")
     else:
-        for e in encontrados:
-            vagas = e["limite"] - len(e["pedidos"])
-            print(f"\n  Nome: {e['nome']}  |  Veiculo: {e['veiculo']}  |  Vagas: {vagas}/{e['limite']}")
+        for nome in encontrados:
+            e = dados.entregadores[nome]
+            if e[1] == "moto":
+                limite = 1
+            elif e[1] == "carro":
+                limite = 2
+            else:
+                limite = 3
+            vagas = limite - len(e[0])
+            print(f"\n  Nome: {nome}  |  Veiculo: {e[1]}  |  Vagas: {vagas}/{limite}")
             print("  -------------------------------------------------------")
 
     input("\n  Pressione ENTER para continuar...")

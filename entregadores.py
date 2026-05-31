@@ -3,8 +3,6 @@ import dados
 import menus
 
 
-
-
 def cadastrar_entregador():
     os.system("cls" if os.name == "nt" else "clear")
     print(f"=======================================================\n  FLUXONORTE  |  CADASTRAR ENTREGADOR\n=======================================================")
@@ -25,13 +23,10 @@ def cadastrar_entregador():
     op = input("\n  Veiculo:\n  1. Moto\n  2. Carro\n  3. Caminhao\n\n  Opcao: ").strip()
     if op == "1":
         veiculo = "moto"
-        limite = 1
     elif op == "2":
         veiculo = "carro"
-        limite = 2
     elif op == "3":
         veiculo = "caminhao"
-        limite = 3
     else:
         print("  Opcao invalida.")
         input("\n  Pressione ENTER para continuar...")
@@ -40,22 +35,16 @@ def cadastrar_entregador():
 
     disp = input("\n  Disponivel?\n  1. Sim\n  2. Nao\n\n  Opcao: ").strip()
     if disp == "1":
-        disponivel = True
+        disponivel = "disponivel"
     elif disp == "2":
-        disponivel = False
+        disponivel = "indisponivel"
     else:
         print("  Opcao invalida.")
         input("\n  Pressione ENTER para continuar...")
         cadastrar_entregador()
         return
 
-    dados.entregadores[nome] = {
-        "nome":       nome,
-        "veiculo":    veiculo,
-        "limite":     limite,
-        "disponivel": disponivel,
-        "pedidos":    []
-    }
+    dados.entregadores[nome] = [[], veiculo, disponivel]
 
     print("\n  Entregador cadastrado com sucesso!")
     input("\n  Pressione ENTER para continuar...")
@@ -70,20 +59,27 @@ def listar_entregadores():
         print("\n  Nenhum entregador cadastrado.")
     else:
         for nome, e in dados.entregadores.items():
-            if e["disponivel"]:
+            if e[1] == "moto":
+                limite = 1
+            elif e[1] == "carro":
+                limite = 2
+            else:
+                limite = 3
+
+            if e[2] == "disponivel":
                 status = "Disponivel"
             else:
                 status = "Indisponivel"
 
-            if e["pedidos"]:
-                lista_pedidos = e["pedidos"]
+            if e[0]:
+                lista_pedidos = e[0]
             else:
                 lista_pedidos = "Nenhum"
 
-            ocupacao = f"{len(e['pedidos'])}/{e['limite']}"
-            print(f"\n  Nome: {nome}  |  Veiculo: {e['veiculo']}  |  Capacidade: {ocupacao}  |  Status: {status}")
+            ocupacao = f"{len(e[0])}/{limite}"
+            print(f"\n  Nome: {nome}  |  Veiculo: {e[1]}  |  Capacidade: {ocupacao}  |  Status: {status}")
             print(f"  Pedidos: {lista_pedidos}")
-            print(f"  -------------------------------------------------------")
+            print("  -------------------------------------------------------")
 
     input("\n  Pressione ENTER para continuar...")
     menus.menu_entregadores()
